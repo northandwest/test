@@ -17,7 +17,7 @@ public class TestReUtils {
 	        String url1= "C:\\Users\\wujiang3\\git\\clubicesoa\\sns-club-soa-web\\src\\main\\resources\\props";
 	        try {
 				String readFileToString = FileUtils.readFileToString(new File(url+"\\important.properties"));
-		        List<String> resultFindAll = ReUtil.findAll("192.168.166.30:3359/.*?\\?", readFileToString, 0, new ArrayList<String>());
+		        List<String> resultFindAll = ReUtil.findAll("192.168.*?\\?", readFileToString, 0, new ArrayList<String>());
 		        for(String t : resultFindAll)
 		        {
 		        	if(!list.contains(t))
