@@ -13,7 +13,7 @@ public class App {
 		
 		JedisSentinelPool pool = new JedisSentinelPool("mymaster", sentinels);
 
-		Jedis jedis = pool.getResource();
+		Jedis jedis = pool.getResource(); 
 
 		jedis.set("jedis", "jedis");
 
