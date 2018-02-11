@@ -9,9 +9,8 @@ public class GenserSql {
 
 	public static void main(String[] args) {
 
-		String sql = "ALTER TABLE `user_comment_{index}`	ADD COLUMN `showorder_dealt` TINYINT(4) NOT NULL COMMENT '晒单处理' AFTER `dealt`;";
-
-		String sql2 = "	ALTER TABLE `user_comment_{index}`	ADD COLUMN `showorder_status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '晒单审核状态' ,	ADD COLUMN `allow_showorder` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '晒单资格' ,	ADD COLUMN `order_delete` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '订单删除状态' ";
+		String sql = "ALTER TABLE `active_comment_record_{index}`	DROP INDEX `jar_create_time_index`,	ADD INDEX `idx_create_time_index` (`create_time`) USING BTREE,	DROP INDEX `jar_active_id_index`,	ADD INDEX `idx_active_id_index` (`active_id`)";
+		String sql2 = "	ALTER TABLE `user_comment_{index}`	ADD COLUMN `showorder_status` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '鏅掑崟瀹℃牳鐘舵�' ,	ADD COLUMN `allow_showorder` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '鏅掑崟璧勬牸' ,	ADD COLUMN `order_delete` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '璁㈠崟鍒犻櫎鐘舵�' ";
 		
 		StringBuffer t1 = new StringBuffer();
 		StringBuffer t2 = new StringBuffer();
@@ -23,7 +22,7 @@ public class GenserSql {
 		}
 		
 		try {
-			FileUtils.write(new File("d://temp//sql//user_comment_change2.sql"), t1.toString());
+			FileUtils.write(new File("d://temp//sql//reward-index.sql"), t1.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
