@@ -5,29 +5,55 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StopWatch;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import slaveof.JedisUtils;
+import slaveof.JedisUtils2;
 
 @RunWith(SpringJUnit4ClassRunner.class) // 使用junit4进行测试
-@ContextConfiguration({ "classpath:/spring-redis-slave-context.xml" }) // 加载配置文件
+@ContextConfiguration({"classpath:/spring-redis-slave-context.xml"}) // 加载配置文件
 public class TestJedis {
 	@Autowired
 	private JedisUtils jedisUtils;
 	@Autowired
-	private  JedisPool jedisPool; 
+	private JedisUtils2 jedisUtils2;
+	@Autowired
+	private  JedisPool jedisPooled; 
+	
 	@Test
 	public void testInsert() {
-		
-	
-		Jedis jedis = jedisPool.getResource();
-		jedis.set("jedis", "2.9.0");
+		StopWatch watch = new StopWatch("redis monitor");
 
-		String result = jedis.get("jedis");
-		String result2 = jedisUtils.get("jedis");
-		System.out.print("jedis==>" + result+","+result2);
+		Jedis jedis = jedisPooled.getResource();
+		watch.start("set");
+//		jedis.set("jedis", "2.9.0");
+		watch.stop();
+		watch.start("get1");
+//		String result = jedis.get("jedis");
+		watch.stop();
+		watch.start("get2");
+//		String result2 = jedisUtils.get("jedis");
+
+		watch.stop();
+		
+		watch.start("get3");
+		String result3 = jedisUtils2.get("jedis");
+		result3 = jedisUtils2.get("jedis");
+		result3 = jedisUtils2.get("jedis");
+		result3 = jedisUtils2.get("jedis");
+		result3 = jedisUtils2.get("jedis");
+		result3 = jedisUtils2.get("jedis");
+
+		watch.stop();
+		
+		System.out.println("jedisPool==>" + watch.prettyPrint());
+
+//		System.out.println("jedis==>" + result);
+//		System.out.println("jedisUtils==>" + result2);
+//		System.out.println("jedisUtils2==>" + result3);
+
 	}
 //	@Test
 //	public void testPool() {
