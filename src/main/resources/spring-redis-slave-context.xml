@@ -12,22 +12,37 @@
 		/> -->
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
 		<property name="maxIdle" value="300" /> <!-- 最大能够保持idel状态的对象数 -->
-		<property name="maxTotal" value="60000" /> <!-- 最大分配的对象数 -->
+		<property name="maxTotal" value="600" /> <!-- 最大分配的对象数 -->
 		<property name="testOnBorrow" value="true" /> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
 	</bean>
 
-	<bean id="jedisPooled" class="redis.clients.jedis.JedisPool"  scope="singleton">
-		<constructor-arg name="poolConfig" type="org.apache.commons.pool2.impl.GenericObjectPoolConfig" ref="jedisPoolConfig" />
-		<constructor-arg name="host" type="java.lang.String" value="192.168.149.31" />
+	<bean id="jedisPooled" class="redis.clients.jedis.JedisPool"
+		scope="singleton">
+		<constructor-arg name="poolConfig"
+			type="org.apache.commons.pool2.impl.GenericObjectPoolConfig" ref="jedisPoolConfig" />
+		<constructor-arg name="host" type="java.lang.String"
+			value="192.168.149.31" />
 		<constructor-arg name="port" value="6379" type="int" />
 	</bean>
 
 	<bean id="jedisUtils" class="slaveof.JedisUtils">
 	</bean>
 	<bean id="testConstructor" class="test.TestConstructor">
-	<constructor-arg name="name" type="java.lang.String" value="jedis" />
-	<constructor-arg name="age" type="java.lang.String" value="12" />
+		<constructor-arg name="name" type="java.lang.String" value="jedis" />
+		<constructor-arg name="age" type="java.lang.String" value="12" />
 	</bean>
+	<bean id="enhancePool" class="slaveof.EnhancePool">
+		<constructor-arg name="poolConfig"
+			type="org.apache.commons.pool2.impl.GenericObjectPoolConfig" ref="jedisPoolConfig" />
+		<constructor-arg name="host" type="java.lang.String"
+			value="192.168.149.31" />
+		<constructor-arg name="port" value="6379" type="int" />
+	</bean>
+
 	<bean id="jedisUtils2" class="slaveof.JedisUtils2">
+	</bean>
+
+	<bean id="jedisUtils3" class="slaveof.JedisUtils3">
+		<property name="enhancePool" ref="enhancePool"></property>
 	</bean>
 </beans>  

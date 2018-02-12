@@ -9,8 +9,10 @@ import org.springframework.util.StopWatch;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import slaveof.EnhancePool;
 import slaveof.JedisUtils;
 import slaveof.JedisUtils2;
+import slaveof.JedisUtils3;
 
 @RunWith(SpringJUnit4ClassRunner.class) // 使用junit4进行测试
 @ContextConfiguration({"classpath:/spring-redis-slave-context.xml"}) // 加载配置文件
@@ -22,19 +24,30 @@ public class TestJedis {
 	@Autowired
 	private  JedisPool jedisPooled; 
 	
+	@Autowired
+	private JedisUtils3 jedisUtils3;
+	
+//	@Autowired
+//	private EnhancePool enhancePool;
+	
 	@Test
 	public void testInsert() {
 		StopWatch watch = new StopWatch("redis monitor");
 
+		watch.start("direct get pool");
 		Jedis jedis = jedisPooled.getResource();
-		watch.start("set");
-//		jedis.set("jedis", "2.9.0");
+
 		watch.stop();
+		
+		watch.start("set");
+		jedis.set("jedis", "2.9.0");
+		watch.stop();
+		
 		watch.start("get1");
-//		String result = jedis.get("jedis");
+		String result = jedis.get("jedis");
 		watch.stop();
 		watch.start("get2");
-//		String result2 = jedisUtils.get("jedis");
+		String result2 = jedisUtils.get("jedis");
 
 		watch.stop();
 		
@@ -48,6 +61,15 @@ public class TestJedis {
 
 		watch.stop();
 		
+		watch.start("get4");
+		String result4 = jedisUtils3.get("jedis");
+
+		result4 = jedisUtils3.get("jedis");
+		result4 = jedisUtils3.get("jedis");
+		result4 = jedisUtils3.get("jedis");
+		result4 = jedisUtils3.get("jedis");
+		result4 = jedisUtils3.get("jedis");
+		watch.stop();
 		System.out.println("jedisPool==>" + watch.prettyPrint());
 
 //		System.out.println("jedis==>" + result);

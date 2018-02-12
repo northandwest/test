@@ -16,12 +16,18 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisException;
 
-public class JedisUtils2 implements ApplicationContextAware {
+public class JedisUtils3{
 
 	private Logger logger = LoggerFactory.getLogger(JedisUtils2.class);
 
 	// private JedisPool jedisPooled;
-	private ApplicationContext context;
+//	private ApplicationContext context;
+	
+	private EnhancePool enhancePool;
+
+	public void setEnhancePool(EnhancePool enhancePool) {
+		this.enhancePool = enhancePool;
+	}
 
 	/**
 	 * 获取缓存
@@ -860,13 +866,10 @@ public class JedisUtils2 implements ApplicationContextAware {
 		StopWatch watch = new StopWatch("redis pool");
 
 		Jedis jedis = null;
-		
-		watch.start("get pooled bean");
-		JedisPool jedisPooled = (JedisPool) context.getBean("jedisPooled");
-		watch.stop();
+
 		try {
-			watch.start("get pool");
-			jedis = jedisPooled.getResource();
+			watch.start("autowired pool get jedis");
+			jedis = enhancePool.getResource();
 			watch.stop();
 			// logger.debug("getResource.", jedis);
 		} catch (JedisException e) {
@@ -906,11 +909,7 @@ public class JedisUtils2 implements ApplicationContextAware {
 		returnBrokenResource(jedis);
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
-		// TODO Auto-generated method stub
-		this.context = arg0;
-	}
+
 
 	/**
 	 * 获取byte[]类型Key
